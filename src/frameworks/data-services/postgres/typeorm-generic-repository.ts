@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { IGenericRepository } from '../../../core';
 
@@ -9,18 +9,24 @@ export class TypeOrmGenericRepository<T> implements IGenericRepository<T> {
     this._repository = repository;
   }
 
-  getAll(): Promise<T[]> {
-    return this._repository.find();
+  getById(id: any): Promise<T> {
+    return this._repository
+      .createQueryBuilder()
+      .where('id = :id', { id })
+      .getOneOrFail();
   }
 
-  get(id: any): Promise<T> {
-    return this._repository.findOne(id);
+  getLike(searchTerm: any): Promise<T[]> {
+    return this._repository
+      .createQueryBuilder()
+      .where('id LIKE :term', { term: `%${searchTerm}%` })
+      .getMany();
   }
 
   async create(item: T) {
     await this._repository.upsert(item as QueryDeepPartialEntity<T>, ['id']);
 
-    return { sucess: true };
+    return { success: true };
   }
 
   update(id: string, item: T) {

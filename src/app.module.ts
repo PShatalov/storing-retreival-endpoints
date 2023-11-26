@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import configuration from './config/configuration';
 import validation from './config/validation';
+
+import { AppController } from './controllers/app.controller';
+
 import { DataServicesModule } from './services/data-services/data-services.module';
+import { StoredDataUseCasesModule } from './use-cases/stored-data/stored-data-use-cases.module';
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import { DataServicesModule } from './services/data-services/data-services.modul
       validationSchema: validation,
     }),
     DataServicesModule,
+    StoredDataUseCasesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}

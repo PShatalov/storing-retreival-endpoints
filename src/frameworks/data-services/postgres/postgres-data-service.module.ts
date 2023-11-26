@@ -18,6 +18,7 @@ import { StoredDataEntity } from './typeorm-entities';
         password: configService.get('dbPassword'),
         database: configService.get('dbName'),
         synchronize: true,
+        autoLoadEntities: true,
       }),
     }),
     TypeOrmModule.forFeature([StoredDataEntity]),
