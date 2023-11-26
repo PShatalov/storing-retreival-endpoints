@@ -16,7 +16,14 @@ export class EncryptedDataService {
     );
 
     const encrypted = Buffer.concat([
-      cipher.update(Buffer.from(value, 'utf-8')),
+      cipher.update(
+        Buffer.from(
+          typeof value === 'object' || Array.isArray(value)
+            ? JSON.stringify(value)
+            : value.toString(),
+          'utf-8',
+        ),
+      ),
       cipher.final(),
     ]);
 
@@ -49,6 +56,7 @@ export class EncryptedDataService {
       decipher.final(),
     ]);
 
+    // TODO: add logic to parse objects
     return {
       id: encryptedStoredData.id,
       decryptedValue: decrypted.toString('utf-8'),

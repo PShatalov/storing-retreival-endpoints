@@ -24,7 +24,7 @@ This document outlines the API endpoints for encrypting and decrypting data. The
 
 ### Base URL
 
-`http://localhost:5005/api/v1/`
+`http://localhost:5005/api/v1`
 
 ### 1. Encrypt Data
 
@@ -55,7 +55,7 @@ This document outlines the API endpoints for encrypting and decrypting data. The
     "success": true
   }
   ```
-### 1. Decrypt Data
+### 2. Decrypt Data
 
 - **Path:** `/decrypt`
 - **Method:** `POST`
