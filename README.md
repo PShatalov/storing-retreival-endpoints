@@ -116,3 +116,14 @@ curl --location 'localhost:5005/api/v1/decrypt' \
     "decryption_key": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is"
 }'
 ```
+
+Wildcard
+
+```bash
+curl --location 'localhost:5005/api/v1/decrypt' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "test-*",
+    "decryption_key": "n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is"
+}'
+```
