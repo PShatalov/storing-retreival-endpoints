@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { Controller, Post, Body } from '@nestjs/common';
 import { StoredDataUseCases } from 'src/use-cases/stored-data/stored-data.use-case';
 
@@ -5,13 +6,23 @@ import { StoredDataUseCases } from 'src/use-cases/stored-data/stored-data.use-ca
 export class AppController {
   constructor(private readonly soretdDataUseCases: StoredDataUseCases) {}
 
+  @Post('encryption-key')
+  getKey(): { encryptionKey: string } {
+    return {
+      encryptionKey: createHash('sha256')
+        .update(String('test'))
+        .digest('base64')
+        .substr(0, 32),
+    };
+  }
+
   // TODO: add DTO models
   @Post('encrypt')
   retreive(
     @Body('id') id: string,
     @Body('encryption_key') encryptionKey: string,
     @Body('value') value: any,
-  ): any {
+  ): Promise<{ success: boolean }> {
     return this.soretdDataUseCases.encryptAndSave(encryptionKey, id, value);
   }
 
@@ -19,7 +30,12 @@ export class AppController {
   store(
     @Body('id') id: string,
     @Body('decryption_key') decryptionKey: string,
-  ): any {
+  ): Promise<
+    {
+      id: string;
+      decryptedValue: any;
+    }[]
+  > {
     return this.soretdDataUseCases.getAndDecryptRecords(id, decryptionKey);
   }
 }
